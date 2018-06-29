@@ -44,7 +44,8 @@ public class DBManager {
             database = mNotepadBaseHelper.getReadableDatabase();
             database.beginTransaction();
             String whereClause = "_id = ?";
-            String[] whereArgs = new String[]{String.valueOf(id)};
+            //SQlite stars with 1, arraylist with 0
+            String[] whereArgs = new String[]{String.valueOf(id + 1)};
             Cursor cursor = database.query(NotepadDbSchema.NotepadTable.NAME,null,whereClause,whereArgs,null,null,null);
             if (cursor.moveToFirst()){
                 note.setName(cursor.getString(cursor.getColumnIndex(NotepadDbSchema.NotepadTable.Cols.NOTE_NAME)));
