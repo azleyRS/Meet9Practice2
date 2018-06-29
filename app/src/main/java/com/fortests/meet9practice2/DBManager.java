@@ -38,7 +38,7 @@ public class DBManager {
     }
 
     public Note getNote(int id){
-        Note note = null;
+        Note note = new Note();
         SQLiteDatabase database = null;
         try{
             database = mNotepadBaseHelper.getReadableDatabase();
@@ -107,5 +107,29 @@ public class DBManager {
         values.put(NotepadDbSchema.NotepadTable.Cols.TIME, note.getTime().getTime());
         values.put(NotepadDbSchema.NotepadTable.Cols.CONTENT, note.getContent());
         return values;
+    }
+
+    public void update(Note note, int id) {
+        String whereClause = "_id = ?";
+        String[] whereArgs = new String[]{String.valueOf(id + 1)};
+
+        SQLiteDatabase database = null;
+        try {
+            database = mNotepadBaseHelper.getWritableDatabase();
+            ContentValues contentValues = getContentValues(note);
+            database.beginTransaction();
+            database.update(NotepadDbSchema.NotepadTable.NAME,contentValues,whereClause,whereArgs);
+            //database.insert(NotepadDbSchema.NotepadTable.NAME,null,contentValues);
+            database.setTransactionSuccessful();
+        } catch (SQLException e){
+            Log.v("SQLiteExeption", e.getMessage());
+        } finally {
+            if (database !=null){
+                if (database.inTransaction()){
+                    database.endTransaction();
+                }
+                database.close();
+            }
+        }
     }
 }

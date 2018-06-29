@@ -1,5 +1,6 @@
 package com.fortests.meet9practice2;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,9 +35,13 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
+        holder.bindPosition(position);
         holder.mName.setText(mNotepad.get(position).getName());
         holder.mContent.setText(mNotepad.get(position).getContent());
-        holder.mTime.setText(mNotepad.get(position).getTime().toString());
+
+        //android.text.format.DateFormat.format("EEE,MMM d HH:mm:ss",mNotepad.get(position).getTime());
+
+        holder.mTime.setText(android.text.format.DateFormat.format("EEE MMM d HH:mm:ss",mNotepad.get(position).getTime()));
     }
 
     @Override
@@ -49,18 +54,31 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        int mNotePosition;
+
         TextView mName;
         TextView mTime;
         TextView mContent;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(final View itemView) {
             super(itemView);
 
             mName = itemView.findViewById(R.id.name);
             mTime = itemView.findViewById(R.id.time);
             mContent = itemView.findViewById(R.id.content);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = Activity2WithFragents.newIntent(itemView.getContext(), mNotePosition);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
 
+        }
+
+        public void bindPosition(int position) {
+            mNotePosition = position;
         }
     }
 }
