@@ -18,6 +18,10 @@
         </activity>
         <activity android:name=".Activity2WithFragents" />
         <activity android:name=".Activity3" />
+        <provider
+            android:authorities="com.fortests.meet9practice2.MyContentProvider"
+            android:name=".MyContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>
