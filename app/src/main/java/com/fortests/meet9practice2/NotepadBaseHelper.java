@@ -136,7 +136,7 @@ public class NotepadBaseHelper extends SQLiteOpenHelper {
 
     public int updateNote(int id, Note note){
         String whereClause = "_id = ?";
-        String[] whereArgs = new String[]{String.valueOf(id + 1)};
+        String[] whereArgs = new String[]{String.valueOf(id)};
         int i = 0;
         SQLiteDatabase database = null;
         try {
